@@ -50,6 +50,10 @@ Additional options that are passed to the GPT-3 API:
 
 Full description of these options is available [here](https://platform.openai.com/docs/api-reference/chat/create).
 
+### View Helper
+
+This gem mixes in an `it` helper method into `ActionView::Base`. For convenience, the helper method assumes the presence of a `current_user` object with a `preferred_language` attribute. If `current_user` is nil, it will use the value of `I18n.default_language` instead.
+
 ### Default Language
 
 The default language is set to `English`. For performance and practical reasons, if you pass in the default language, GPT is not invoked. Change the default language in an initializer or at runtime by changing the value of the `default_language` property on the `I18n` module.
