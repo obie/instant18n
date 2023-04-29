@@ -21,7 +21,7 @@ Invoke with `I18n.it` or simply `it` in your view templates. (Method is short fo
 The `it` method provides translation using the GPT-3 language model and caching the results to improve performance.
 
 ```
->> I18n.it('Hello world!', lang: 'español')
+>> I18n.it('Hello world!', 'español')
 => Hola mundo!
 ```
 
