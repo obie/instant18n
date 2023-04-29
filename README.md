@@ -25,15 +25,17 @@ The `it` method provides translation using the GPT-3 language model and caching 
 => Hola mundo!
 ```
 
-This will attempt to translate the text associated with the key hello_world to the English language using the GPT-3 language model. If the translation is successful, the translated text will be returned. If the translation fails, the original text (or GPT error) will be returned.
+This will attempt to translate the text "Hello world!" to Spanish using the GPT-3 language model. If the translation is successful, the translated text will be returned. If the translation fails, the original text (or GPT error) will be returned.
 
 ### Options
+
+`I18n.it(text, lang, opts)`
 
 The `it` method accepts the following parameters:
 
 - key (required): The key associated with the text to be translated.
 - lang (required): The language to translate the text to. Defaults to the default language set in the I18n module.
-- class: if you pass in css classes with the `classes` option, the method will return the translation wrapped in a `div` tag, instead of plain text.
+- class: if you pass in css classes with the `class` option, the method will return the translation wrapped in a `div` tag, instead of plain text.
 
 Additional options that affect caching:
 - force: force a cache miss
@@ -51,6 +53,8 @@ Additional options that are passed to the GPT-3 API:
 Full description of these options is available [here](https://platform.openai.com/docs/api-reference/chat/create).
 
 ### View Helper
+
+`it(text, opts)`
 
 This gem mixes in an `it` helper method into `ActionView::Base`. For convenience, the helper method assumes the presence of a `current_user` object with a `preferred_language` attribute. If `current_user` is nil, it will use the value of `I18n.default_language` instead.
 
