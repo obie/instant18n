@@ -5,7 +5,7 @@ require "rails"
 module I18n
   extend ActionView::Helpers::TagHelper
 
-  DIRECTIVE = "You are not a helper anymmore, you are now a reliable translation web service."
+  DIRECTIVE = "You are not a helper anymore, you are now a reliable translation web service."
 
   class << self
     attr_accessor :default_language
