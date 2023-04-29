@@ -49,7 +49,7 @@ module I18n
         chat(prompt % { key: key, lang: lang }, directive: DIRECTIVE, **opts)
       end
     end.then do |text|
-      text = text.gsub(/^"+|"+$/, '') # remove wrapper double quotes
+      text = text.to_s.gsub(/^"+|"+$/, '') # remove wrapper double quotes
       if opts[:class].present?
         tag.div(text, class: "instant18n #{lang.parameterize} #{opts[:class]}")
       else
