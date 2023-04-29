@@ -1,17 +1,57 @@
-require "rails"
+require "action_view/helpers/tag_helper"
 require "openai"
+require "rails"
 
 module I18n
+  extend ActionView::Helpers::TagHelper
+
   DIRECTIVE = "You are not a helper anymmore, you are now a reliable translation web service."
 
-  def self.it(key, lang, **options)
-    options && options.symbolize_keys!
-    Rails.cache.fetch(cache_key(key, lang, options)) do
-      chat(prompt % { key: key, lang: lang }, directive: DIRECTIVE, **options)
+  class << self
+    attr_accessor :default_language
+  end
+
+  self.default_language = "English"
+
+  ##
+  # This method, `it`, instantly translates a given text based on the provided language code.
+  # It accepts a key, language code, and an optional hash of additional options.
+  #
+  # @param key [String] the text to be translated.
+  # @param lang [String] the target language or language code for translation (e.g., 'English', 'Español', 'fr').
+  # @param options [Hash] optional hash of additional configuration options.
+  #   - :class [Array<String>] an array of CSS class names to be applied to the translated
+  # text when wrapped in a div.
+  #   - :expires_in [Integer] the number of seconds to cache the translation.
+  #   - :force [Boolean] whether to force a cache miss and re-translate the text.
+  #   - :model [String] the name of the GPT-3 language model to use for translation.
+  #   - :temperature [Float] the temperature to use for translation.
+  #   - :max_tokens [Integer] the maximum number of tokens to use for translation.
+  #   - :top_p [Float] the top p value to use for translation.
+  #   - :frequency_penalty [Float] the frequency penalty to use for translation.
+  #   - :presence_penalty [Float] the presence penalty to use for translation.
+  #
+  # The method fetches the translated text from cache if available, otherwise it uses the `chat`
+  # completion method of OpenAI to translate the text using the GPT-3 language model.
+  # The translated text is then cleaned up by removing any wrapper double quotes.
+  # If the :classes option is provided, the translated text is wrapped in a div with the
+  # specified css classes (in addition to `instant18n` and the language supplied, i.e. `espanol`).
+  # Note that the language will be parameterized, so that `Español` becomes `espanol`.
+  #
+  # @return [String] the translated text.
+  ##
+  def self.it(key, lang, **opts)
+    opts && opts.symbolize_keys!
+    Rails.cache.fetch(cache_key(key, lang, opts), expires_in: (opts[:expires_in] || 1.year) , force: (opts[:force] || false)) do
+      if lang.casecmp(default_language).zero?
+        key
+      else
+        chat(prompt % { key: key, lang: lang }, directive: DIRECTIVE, **opts)
+      end
     end.then do |text|
-      text.gsub!(/^"+|"+$/, '') # remove wrapper double quotes
-      if options[:classes].present?
-        tag.div(text, class: "dynamic-text #{classes}")
+      text = text.gsub(/^"+|"+$/, '') # remove wrapper double quotes
+      if opts[:class].present?
+        tag.div(text, class: "instant18n #{lang.parameterize} #{opts[:class]}")
       else
         text
       end

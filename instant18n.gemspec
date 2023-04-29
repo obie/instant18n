@@ -31,6 +31,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   # Uncomment to register a new dependency of your gem
+  spec.add_dependency "actionview"
   spec.add_dependency "activesupport"
   spec.add_dependency "railties"
   spec.add_dependency "ruby-openai", "~> 4.0.0"
