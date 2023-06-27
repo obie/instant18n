@@ -12,7 +12,7 @@ If bundler is not being used to manage dependencies, install the gem by executin
 
     $ gem install instant18n
 
-Make sure to set `OPENAI_ACCESS_TOKEN` in your environment so that the library is able to access GPT.
+Make sure to set `OPENAI_ACCESS_TOKEN` environment variable or `openai_access_token` in your Rails credentials file so that the library is able to access GPT.
 
 ## Usage
 
