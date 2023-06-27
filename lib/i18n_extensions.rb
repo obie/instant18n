@@ -98,10 +98,14 @@ module I18n
   end
 
   def self.openai_client
-    @client ||= OpenAI::Client.new(access_token: ENV.fetch("OPENAI_ACCESS_TOKEN"))
+    @client ||= OpenAI::Client.new(access_token: openai_access_token)
   end
 
   def self.gpt_message(role, content)
     { role: role.to_s, content: content }
+  end
+
+  def self.openai_access_token
+    ENV.fetch("OPENAI_ACCESS_TOKEN", Rails.application.credentials.openai_access_token)
   end
 end
