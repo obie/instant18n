@@ -73,7 +73,6 @@ Because GPT is smart and can translate into almost anything that resembles a lan
 * Baby Talk
 * Baseldeutsch
 * Braille
-* Ebonics
 * Emoji
 * Esperanto
 * Gregg Shorthand
